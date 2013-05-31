@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="John Smith"
+        android:id="@+id/contact"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:textIsSelectable="true"
+        android:layout_toRightOf="@+id/status"
+        android:layout_alignTop="@+id/status" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/message"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:autoText="false"
+        android:editable="true"
+        android:focusable="true"
+        android:hint="Write message..."
+        android:singleLine="true" />
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/messages"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/message"
+        android:headerDividersEnabled="false"
+        android:layout_below="@+id/statusDescription"
+        android:transcriptMode="alwaysScroll"
+        android:stackFromBottom="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send"
+        android:id="@+id/button"
+        android:layout_alignRight="@+id/contact"
+        android:layout_alignTop="@+id/message"
+        android:onClick="onSend" />
+
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:id="@+id/status"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/online" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description ..."
+        android:id="@+id/statusDescription"
+        android:layout_alignLeft="@+id/contact"
+        android:layout_below="@+id/contact"
+        android:singleLine="true" />
+
+</RelativeLayout>
