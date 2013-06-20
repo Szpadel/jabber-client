@@ -1,23 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-        android:orientation="vertical"
+<RelativeLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditText
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+        android:layout_height="wrap_content"
+        android:id="@+id/connect_ip"
+        android:layout_gravity="center"
+        android:singleLine="true"
+        android:hint="Server IP"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView"/>
+
     <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/connect_ip" android:layout_gravity="center" android:singleLine="true"
-            android:hint="Server IP"/>
-    <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/connect_pass" android:layout_gravity="center" android:hint="Password"
-            android:password="true"/>
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/connect_pass"
+        android:layout_gravity="center"
+        android:hint="Password"
+        android:password="true"
+        android:layout_alignLeft="@+id/connect_ip"
+        android:layout_below="@+id/connect_ip"/>
+
     <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Login"
-            android:id="@+id/connect_login_button" android:layout_gravity="center" android:clickable="true"
-            android:longClickable="false" android:onClick="connect"/>
-</LinearLayout>
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:id="@+id/connect_login_button"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:longClickable="false"
+        android:onClick="connect"
+        android:layout_alignLeft="@+id/connect_ip"
+        android:layout_alignParentBottom="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Witaj w komunikatorze!"
+        android:id="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="32dp"
+        android:textSize="24dp"
+        android:textStyle="bold"/>
+
+    <ImageView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:id="@+id/imageView"
+        android:layout_alignRight="@+id/connect_ip"
+        android:layout_above="@+id/connect_login_button"
+        android:src="@drawable/contact"/>
+</RelativeLayout>

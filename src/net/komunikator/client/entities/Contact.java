@@ -17,13 +17,15 @@ public class Contact {
     String jid;
     String statusDescription;
     Conversation conversation;
+    Connection connection;
 
-    public Contact(int id, String name, Status status, String jid, String statusDescription) {
+    public Contact(int id, String name, Status status, String jid, String statusDescription, Connection connection) {
         this.id = id;
         this.name = name;
         this.status = status;
         this.jid = jid;
         this.statusDescription = statusDescription;
+        this.connection = connection;
     }
 
     public int getId() {
@@ -63,7 +65,7 @@ public class Contact {
     }
 
     public Conversation getConversation() {
-        if(conversation == null) {
+        if (conversation == null) {
             Conversations conversations = Conversations.getInstance();
             conversation = conversations.getConversation(this);
         }

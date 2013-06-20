@@ -34,14 +34,17 @@ public class Conversations {
 
     public Conversation getConversation(Contact contact) {
         Conversation conv = conversationMap.get(contact);
-        if(conv == null) {
+        if (conv == null) {
             // FIXME: get from server
             conv = new Conversation(contact, new LinkedList<Message>());
             conversationMap.put(contact, conv);
 
-            if(contact.getId() == 0) {
+            if (contact.getId() == 0) {
                 conv.addMessage(new Message(0, contact, "Hello Mr Szpadel :)", new Date()));
                 conv.addMessage(new Message(0, contact, "Have a nice day :)", new Date()));
+            }
+            if (contact.getId() == 1) {
+                conv.addMessage(new Message(0, contact, "dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa ", new Date()));
             }
         }
         return conv;

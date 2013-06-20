@@ -34,5 +34,11 @@ public class Conversation {
     public void sendMessage(String msg) {
         Message message = new Message(0, null, msg, new Date()); // FIXME: wyslij do serwera
         messages.add(message);
+
+        // FIXME: demo
+        if (contact.getId() == 2) {
+            Message resp = new Message(0, contact, "Yes my lord!", new Date());
+            messages.add(resp);
+        }
     }
 }

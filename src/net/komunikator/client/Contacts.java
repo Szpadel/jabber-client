@@ -1,9 +1,13 @@
 package net.komunikator.client;
 
+import net.komunikator.client.entities.Connection;
 import net.komunikator.client.entities.Contact;
 import net.komunikator.client.entities.Status;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,8 +40,7 @@ public class Contacts {
         contacts.remove(contact);
     }
 
-    public List<Contact> getContacts()
-    {
+    public List<Contact> getContacts() {
         return new LinkedList<Contact>(contacts.values());
     }
 
@@ -45,12 +48,14 @@ public class Contacts {
         return contacts.get(id);
     }
 
-    public void loadFixtures()
-    {
-        contacts.put(0, new Contact(0, "John Smith", Status.online, "john@example.org", "Have a nice day!"));
-        contacts.put(1, new Contact(1, "Anna Smith", Status.away, "john@example.org", ""));
-        contacts.put(2, new Contact(2, "Bura Suka", Status.offline, "john@example.org",
-                "\"Kurwa kurwa kurwa\" -- Student"));
-        contacts.put(3, new Contact(3, "Michael", Status.online, "john@example.org", "I like trains..."));
+    public void loadFixtures() {
+        Connections connections = Connections.getInstance();
+        Connection connection = connections.getConnection(0);
+
+        contacts.put(0, new Contact(0, "John Smith", Status.online, "john@example.org", "Have a nice day!", connection));
+        contacts.put(1, new Contact(1, "Anna Smith", Status.away, "john@example.org", "", connection));
+        contacts.put(2, new Contact(2, "Bura Michal", Status.offline, "john@example.org",
+                "\"Kurczak Kurczak Kurczak Kurczak\" -- Student", connection));
+        contacts.put(3, new Contact(3, "Michael", Status.online, "john@example.org", "I like trains...", connection));
     }
 }

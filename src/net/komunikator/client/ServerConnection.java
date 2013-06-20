@@ -1,5 +1,7 @@
 package net.komunikator.client;
 
+import net.komunikator.client.entities.Connection;
+
 /**
  * Created with IntelliJ IDEA.
  * User: ziomek
@@ -7,17 +9,17 @@ package net.komunikator.client;
  * Time: 01:55
  * To change this template use File | Settings | File Templates.
  */
-public class Connection {
-    private static Connection ourInstance = new Connection();
+public class ServerConnection {
+    private static ServerConnection ourInstance = new ServerConnection();
 
     protected String serverAddress;
     protected String password;
 
-    public static Connection getInstance() {
+    public static ServerConnection getInstance() {
         return ourInstance;
     }
 
-    private Connection() {
+    private ServerConnection() {
     }
 
     public String getServerAddress() {
@@ -34,5 +36,10 @@ public class Connection {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public static void connect() {
+        Connections connections = Connections.getInstance();
+        connections.addConnection(new Connection(0, "dupa", "cyce", "gowno.org", "android"));
     }
 }

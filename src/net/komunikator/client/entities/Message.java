@@ -39,8 +39,7 @@ public class Message {
         return date;
     }
 
-    public String getHumanDate()
-    {
+    public String getHumanDate() {
         String out;
 
         Calendar cal = Calendar.getInstance();
@@ -49,16 +48,15 @@ public class Message {
         cal.setTime(date);
         today.setTime(new Date());
 
-        if(cal.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
-                cal.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR))
-        {
+        if (cal.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+                cal.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)) {
             out = "Dzisiaj ";
-        }else
-        {
-            out = cal.get(Calendar.DAY_OF_MONTH) + "-" + cal.get(Calendar.MONTH) + " ";
+        } else {
+            out = cal.get(Calendar.DAY_OF_MONTH) + "-" +
+                    cal.get(Calendar.MONTH) + " ";
         }
 
-        out += cal.get(cal.get(Calendar.HOUR)) + ":";
+        out += cal.get(Calendar.HOUR_OF_DAY) + ":";
         int minutes = cal.get(Calendar.MINUTE);
         out += minutes < 10 ? "0" + minutes : minutes;
 
