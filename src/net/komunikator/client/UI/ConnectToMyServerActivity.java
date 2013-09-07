@@ -2,11 +2,13 @@ package net.komunikator.client.UI;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 import net.komunikator.client.R;
-import net.komunikator.client.ServerConnection;
+import net.komunikator.client.network.NetworkConnection;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,6 +21,7 @@ public class ConnectToMyServerActivity extends Activity {
 
     EditText ipEditText;
     EditText passEditText;
+    EditText deviceNameEditText;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,22 +29,72 @@ public class ConnectToMyServerActivity extends Activity {
 
         ipEditText = (EditText) findViewById(R.id.connect_ip);
         passEditText = (EditText) findViewById(R.id.connect_pass);
+        deviceNameEditText = (EditText) findViewById(R.id.connect_device_name);
 
         ipEditText.setText(getPreferences(MODE_PRIVATE).getString("server_ip", ""));
+        deviceNameEditText.setText(getPreferences(MODE_PRIVATE).getString("device_name", "Android"));
     }
 
     public void connect(View v) {
-        ServerConnection conn = ServerConnection.getInstance();
 
-        conn.setServerAddress(ipEditText.getText().toString());
-        conn.setPassword(passEditText.getText().toString());
+        String ip = ipEditText.getText().toString();
+        String deviceName = deviceNameEditText.getText().toString();
+        String password = passEditText.getText().toString();
 
-        getPreferences(MODE_PRIVATE).edit().putString("server_ip", conn.getServerAddress());
+        (new Login(this)).execute(ip, deviceName, password);
+    }
 
-        ServerConnection.connect();
+    private class Login extends AsyncTask<String, Void, Void> {
+        boolean success = false;
+        String errorMsg;
+        Activity activity;
+        NetworkConnection networkConnection;
+        String ip;
+        String deviceName;
 
-        Intent intent = new Intent(this, ContactsListActivity.class);
-        startActivity(intent);
+        private Login(Activity activity) {
+            this.activity = activity;
+        }
 
+        @Override
+        protected Void doInBackground(String... params) {
+            ip = params[0];
+            deviceName = params[1];
+            String password = params[2];
+
+            if (networkConnection.isLoggedIn()) {
+                networkConnection.disconnect();
+            }
+
+            if (!networkConnection.connect(ip)) {
+                errorMsg = "Connection failed";
+                return null;
+            }
+            if (!networkConnection.login(deviceName, password)) {
+                errorMsg = "Login failed";
+                return null;
+            }
+            success = true;
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            networkConnection = NetworkConnection.getInstance();
+            networkConnection.setActivity(activity);
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            if (success) {
+                getPreferences(MODE_PRIVATE).edit().putString("server_ip", ip);
+                getPreferences(MODE_PRIVATE).edit().putString("device_name", deviceName);
+
+                Intent intent = new Intent(activity, ContactsListActivity.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(activity, errorMsg, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }
