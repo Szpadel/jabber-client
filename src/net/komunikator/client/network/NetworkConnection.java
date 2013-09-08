@@ -6,8 +6,6 @@ import de.root1.simon.Simon;
 import net.komunikator.shared.network.ServerInterface;
 import net.komunikator.shared.network.SessionInterface;
 
-import java.net.Socket;
-
 /**
  * Created with IntelliJ IDEA.
  * User: ziomek
@@ -32,8 +30,8 @@ public class NetworkConnection {
     private NetworkConnection() {
     }
 
-    public void setActivity(Activity context) {
-        this.activity = context;
+    public void setActivity(Activity activity) {
+        this.activity = activity;
     }
 
     private void checkInit() {
@@ -44,10 +42,6 @@ public class NetworkConnection {
 
     public boolean connect(String address) {
         try {
-            Socket socket = new Socket(address, port);
-            boolean netAccess = socket.isConnected();
-            socket.close();
-
             lookup = Simon.createNameLookup(address, port);
             server = (ServerInterface) lookup.lookup("server");
         } catch (Exception e) {
@@ -78,13 +72,16 @@ public class NetworkConnection {
         if (session != null) {
             session = null;
         }
+        if (client != null) {
+            client = null;
+        }
         lookup.release(server);
         server = null;
         lookup = null;
     }
 
     public boolean isLoggedIn() {
-        return session != null;
+        return session != null && session.isValid();
     }
 
     public ServerInterface getServer() {

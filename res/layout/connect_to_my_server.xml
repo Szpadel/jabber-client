@@ -33,7 +33,8 @@
         android:layout_gravity="center"
         android:hint="Password"
         android:password="true"
-        android:layout_below="@+id/connect_ip"/>
+        android:layout_below="@+id/connect_ip"
+        android:singleLine="true"/>
 
     <Button
         android:layout_width="fill_parent"

@@ -42,6 +42,7 @@ public class Client implements ClientCallbackInterface, SimonUnreferenced {
 
     @Override
     public void unreferenced() {
+        NetworkConnection.getInstance().disconnect();
         toast("Connection to server closed");
     }
 }

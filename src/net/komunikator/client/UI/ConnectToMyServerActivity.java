@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import net.komunikator.client.R;
@@ -22,6 +23,7 @@ public class ConnectToMyServerActivity extends Activity {
     EditText ipEditText;
     EditText passEditText;
     EditText deviceNameEditText;
+    Button loginButton;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,9 +32,19 @@ public class ConnectToMyServerActivity extends Activity {
         ipEditText = (EditText) findViewById(R.id.connect_ip);
         passEditText = (EditText) findViewById(R.id.connect_pass);
         deviceNameEditText = (EditText) findViewById(R.id.connect_device_name);
+        loginButton = (Button) findViewById(R.id.connect_login_button);
 
         ipEditText.setText(getPreferences(MODE_PRIVATE).getString("server_ip", ""));
         deviceNameEditText.setText(getPreferences(MODE_PRIVATE).getString("device_name", "Android"));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        NetworkConnection networkConnection = NetworkConnection.getInstance();
+        if (networkConnection.isLoggedIn()) {
+            openContactActivity();
+        }
     }
 
     public void connect(View v) {
@@ -42,6 +54,11 @@ public class ConnectToMyServerActivity extends Activity {
         String password = passEditText.getText().toString();
 
         (new Login(this)).execute(ip, deviceName, password);
+    }
+
+    private void openContactActivity() {
+        Intent intent = new Intent(this, ContactsListActivity.class);
+        startActivity(intent);
     }
 
     private class Login extends AsyncTask<String, Void, Void> {
@@ -82,16 +99,16 @@ public class ConnectToMyServerActivity extends Activity {
         protected void onPreExecute() {
             networkConnection = NetworkConnection.getInstance();
             networkConnection.setActivity(activity);
+            loginButton.setEnabled(false);
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
+            loginButton.setEnabled(true);
             if (success) {
-                getPreferences(MODE_PRIVATE).edit().putString("server_ip", ip);
-                getPreferences(MODE_PRIVATE).edit().putString("device_name", deviceName);
-
-                Intent intent = new Intent(activity, ContactsListActivity.class);
-                startActivity(intent);
+                getPreferences(MODE_PRIVATE).edit().putString("server_ip", ip)
+                        .putString("device_name", deviceName).apply();
+                openContactActivity();
             } else {
                 Toast.makeText(activity, errorMsg, Toast.LENGTH_LONG).show();
             }
