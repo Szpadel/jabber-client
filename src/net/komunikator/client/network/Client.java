@@ -6,6 +6,11 @@ import android.util.Log;
 import android.widget.Toast;
 import de.root1.simon.SimonUnreferenced;
 import de.root1.simon.annotation.SimonRemote;
+import net.komunikator.client.Connections;
+import net.komunikator.client.Contacts;
+import net.komunikator.client.entities.Connection;
+import net.komunikator.client.entities.Contact;
+import net.komunikator.client.entities.Status;
 import net.komunikator.shared.network.ClientCallbackInterface;
 
 /**
@@ -38,6 +43,36 @@ public class Client implements ClientCallbackInterface, SimonUnreferenced {
                 Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public void addContact(int id, int connectionId, String name, int status, String jid, String statusDescription) {
+        Contacts contacts = Contacts.getInstance();
+        Connections connections = Connections.getInstance();
+        Connection connection = connections.getConnection(connectionId);
+        Status statusEnum;
+        switch (status) {
+            case 0:
+                statusEnum = Status.offline;
+                break;
+            case 1:
+                statusEnum = Status.online;
+                break;
+            case 2:
+                statusEnum = Status.away;
+                break;
+            default:
+                statusEnum = Status.offline;
+        }
+        Contact contact = new Contact(id, name, statusEnum, jid, statusDescription, connection);
+        contacts.addContact(contact);
+    }
+
+    @Override
+    public void addConnection(int id, String username, String domain, String resource) {
+        Connections connections = Connections.getInstance();
+        Connection connection = new Connection(id, username, domain, resource);
+        connections.addConnection(connection);
     }
 
     @Override

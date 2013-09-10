@@ -14,10 +14,9 @@ public class Connection {
     String domain;
     String resource;
 
-    public Connection(int id, String username, String password, String domain, String resource) {
+    public Connection(int id, String username, String domain, String resource) {
         this.id = id;
         this.username = username;
-        this.password = password;
         this.domain = domain;
         this.resource = resource;
     }

@@ -28,7 +28,9 @@ public class ContactsListActivity extends Activity {
         setContentView(R.layout.contacts_list);
         contactsList = (ListView) findViewById(R.id.contacts_view);
         contacts = Contacts.getInstance();
-        contactsList.setAdapter(new ContactsArrayAdapter(this, R.layout.contact_row, contacts.getContacts()));
+        ContactsArrayAdapter contactsArrayAdapter = new ContactsArrayAdapter(this, R.layout.contact_row, contacts.getContacts());
+        contactsArrayAdapter.setNotifyOnChange(true);
+        contactsList.setAdapter(contactsArrayAdapter);
 
         final ContactsListActivity _this = this;
         contactsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -92,6 +92,7 @@ public class ConnectToMyServerActivity extends Activity {
                 return null;
             }
             success = true;
+            networkConnection.getSession().synchronize();
             return null;
         }
 

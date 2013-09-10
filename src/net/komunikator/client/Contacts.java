@@ -27,9 +27,6 @@ public class Contacts {
 
     private Contacts() {
         contacts = new LinkedHashMap<Integer, Contact>();
-
-        // FIXME: w celach demonstracyjnych
-        loadFixtures();
     }
 
     public void addContact(Contact contact) {
