@@ -15,6 +15,9 @@ import net.komunikator.client.R;
 import net.komunikator.client.UI.adapter.MessagesArrayAdapter;
 import net.komunikator.client.entities.Conversation;
 
+import java.util.Observable;
+import java.util.Observer;
+
 /**
  * Created with IntelliJ IDEA.
  * User: ziomek
@@ -31,6 +34,30 @@ public class ConversationActivity extends Activity {
     TextView statusDescription;
     ImageView status;
 
+    Observer updateList = new Observer() {
+        @Override
+        public void update(Observable observable, Object data) {
+            ConversationActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((MessagesArrayAdapter) messagesListView.getAdapter()).notifyDataSetChanged();
+                }
+            });
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        conversation.addObserver(updateList);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        conversation.deleteObserver(updateList);
+    }
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.conversation);
@@ -38,7 +65,7 @@ public class ConversationActivity extends Activity {
         messagesListView = (ListView) findViewById(R.id.messages);
         sendEditText = (EditText) findViewById(R.id.message);
         contactName = (TextView) findViewById(R.id.contact);
-        status = (ImageView)findViewById(R.id.status);
+        status = (ImageView) findViewById(R.id.status);
         statusDescription = (TextView) findViewById(R.id.statusDescription);
 
         Intent intent = getIntent();
@@ -57,7 +84,7 @@ public class ConversationActivity extends Activity {
         conversation.sendMessage(sendEditText.getText().toString());
         sendEditText.setText("");
         ((MessagesArrayAdapter) messagesListView.getAdapter()).notifyDataSetChanged();
-        InputMethodManager imm = (InputMethodManager)getSystemService(
+        InputMethodManager imm = (InputMethodManager) getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(sendEditText.getWindowToken(), 0);
     }

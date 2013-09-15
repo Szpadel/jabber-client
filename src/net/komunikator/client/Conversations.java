@@ -4,10 +4,10 @@ import net.komunikator.client.entities.Contact;
 import net.komunikator.client.entities.Conversation;
 import net.komunikator.client.entities.Message;
 
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Observable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +16,7 @@ import java.util.Map;
  * Time: 03:43
  * To change this template use File | Settings | File Templates.
  */
-public class Conversations {
+public class Conversations extends Observable {
     private static Conversations ourInstance = new Conversations();
     Map<Contact, Conversation> conversationMap;
 
@@ -35,17 +35,8 @@ public class Conversations {
     public Conversation getConversation(Contact contact) {
         Conversation conv = conversationMap.get(contact);
         if (conv == null) {
-            // FIXME: get from server
             conv = new Conversation(contact, new LinkedList<Message>());
             conversationMap.put(contact, conv);
-
-            if (contact.getId() == 0) {
-                conv.addMessage(new Message(0, contact, "Hello Mr Szpadel :)", new Date()));
-                conv.addMessage(new Message(0, contact, "Have a nice day :)", new Date()));
-            }
-            if (contact.getId() == 1) {
-                conv.addMessage(new Message(0, contact, "dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa dupa ", new Date()));
-            }
         }
         return conv;
     }

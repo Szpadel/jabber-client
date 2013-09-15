@@ -2,10 +2,7 @@ package net.komunikator.client;
 
 import net.komunikator.client.entities.Connection;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +11,7 @@ import java.util.Map;
  * Time: 17:36
  * To change this template use File | Settings | File Templates.
  */
-public class Connections {
+public class Connections extends Observable {
     private static Connections ourInstance = new Connections();
 
     Map<Integer, Connection> connections;
@@ -37,6 +34,7 @@ public class Connections {
 
     public void addConnection(Connection connection) {
         connections.put(connection.getId(), connection);
+        notifyObservers();
     }
 
 

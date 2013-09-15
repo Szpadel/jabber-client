@@ -4,10 +4,7 @@ import net.komunikator.client.entities.Connection;
 import net.komunikator.client.entities.Contact;
 import net.komunikator.client.entities.Status;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,10 +13,11 @@ import java.util.Map;
  * Time: 02:01
  * To change this template use File | Settings | File Templates.
  */
-public class Contacts {
+public class Contacts extends Observable {
     private static Contacts ourInstance = new Contacts();
 
     Map<Integer, Contact> contacts;
+    List<Contact> contactsList;
 
     public static Contacts getInstance() {
         return ourInstance;
@@ -27,18 +25,26 @@ public class Contacts {
 
     private Contacts() {
         contacts = new LinkedHashMap<Integer, Contact>();
+        contactsList = new LinkedList<Contact>();
     }
 
     public void addContact(Contact contact) {
         contacts.put(contact.getId(), contact);
+        contactsList.add(contact);
+        setChanged();
+        notifyObservers();
     }
 
     public void removeContact(Contact contact) {
         contacts.remove(contact);
+        contactsList.add(contact);
+        setChanged();
+        notifyObservers();
     }
 
     public List<Contact> getContacts() {
-        return new LinkedList<Contact>(contacts.values());
+        return contactsList;
+        //return new LinkedList<Contact>(contacts.values());
     }
 
     public Contact getContact(int id) {

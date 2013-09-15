@@ -8,10 +8,14 @@ import de.root1.simon.SimonUnreferenced;
 import de.root1.simon.annotation.SimonRemote;
 import net.komunikator.client.Connections;
 import net.komunikator.client.Contacts;
+import net.komunikator.client.Conversations;
 import net.komunikator.client.entities.Connection;
 import net.komunikator.client.entities.Contact;
+import net.komunikator.client.entities.Message;
 import net.komunikator.client.entities.Status;
 import net.komunikator.shared.network.ClientCallbackInterface;
+
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -64,15 +68,37 @@ public class Client implements ClientCallbackInterface, SimonUnreferenced {
             default:
                 statusEnum = Status.offline;
         }
-        Contact contact = new Contact(id, name, statusEnum, jid, statusDescription, connection);
-        contacts.addContact(contact);
+        Contact contact;
+        if ((contact = contacts.getContact(id)) == null) {
+            contact = new Contact(id, name, statusEnum, jid, statusDescription, connection);
+            contacts.addContact(contact);
+        } else {
+            contact.setName(name);
+            contact.setJid(jid);
+            contact.setStatus(statusEnum);
+            contact.setStatusDescription(statusDescription);
+        }
     }
 
     @Override
     public void addConnection(int id, String username, String domain, String resource) {
         Connections connections = Connections.getInstance();
-        Connection connection = new Connection(id, username, domain, resource);
-        connections.addConnection(connection);
+        Connection connection;
+        if ((connection = connections.getConnection(id)) == null) {
+            connection = new Connection(id, username, domain, resource);
+            connections.addConnection(connection);
+        } else {
+            connection.setUsername(username);
+            connection.setDomain(domain);
+            connection.setResource(resource);
+        }
+    }
+
+    @Override
+    public void addMessage(int id, int contactId, String message, int send_by) {
+        Contact contact = Contacts.getInstance().getContact(contactId);
+        Message messageObj = new Message(id, (send_by) == 1 ? null : contact, message, new Date());
+        Conversations.getInstance().getConversation(contact).addMessage(messageObj);
     }
 
     @Override
